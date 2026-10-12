@@ -110,3 +110,19 @@ class ListaRutas:
             actual = actual.siguiente
 
         return False
+
+    def recorrer_imprimiendo(self):
+        """
+        Recorre la lista desde la cabeza hasta la cola imprimiendo cada ruta.
+        Complejidad: O(n)
+        """
+        if self.esta_vacia():
+            print(f"La aerolínea {self.aerolinea} no tiene rutas registradas.")
+            return
+
+        print(f"--- Rutas de la aerolínea {self.aerolinea} ---")
+        actual = self.cabeza
+        while actual is not None:
+            print(actual)
+            actual = actual.siguiente
+        print(f"Total de rutas: {self.tamano}\n")
