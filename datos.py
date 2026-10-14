@@ -26,4 +26,27 @@ def cargar_rutas_region(ruta_airports_csv, ruta_routes_csv, pais_asignado="Mexic
     #1. Definir columnas segun la documentacion de OpenFlights
     cols_airports=["AirportID","Name","City","Country","IATA", "ICAO","Lat","Lon","Alt","Timezone","DST","Tz","Type","Source"]
     cols_routes=["Airline","AirlineID", "Source","SourceID","Dest","DestID","Codeshare","Stops","Equipment"]
-    
+
+    #2.Cargar datos tratando el string "\N" de OpenFlights como valor nulo(NaN)
+    try:
+        df_airports=pd.read_csv(ruta_airports_csv,names=cols_airports,na_values="\\N")
+        df_routes= pd.read_csv(ruta_routes_csv,names=cols_routes,na_values="\\N")
+    except FileNotFoundError:
+        print("Error:No se encontraron los archivos CSV.Verifica las rutas.")
+        return[]
+    #3.Limpieza:Eliminar aeropuertos sin codigo IATA
+    df_airports=df_airports.dropna(subset=["IATA"])
+
+    #4. Filtrar aeropuertos por el subconjunto de trabajo(ejemplo: un pais o continente)
+    df_region=df_airports[df_airports["Country"]== pais_asignado]
+    iata_region = set(df_region["IATA"].tolist())
+
+    #5.Filtrar rutas donde el aeropuerto de origen pertenezca a la region asignada
+    df_rutas_region = df_routes[df_routes["Source"].isin(iata_region)].copy()
+    df_rutas_region=df_rutas_region.dropna(subset=["Source","Dest"])
+
+    #6. Mapear coordenadas para calcular distancias
+    dicc_coords=df_airports.set_index("IATA")[["Lat","Lon"]].to_dict("index")
+
+    rutas_procesadas=[]
+
