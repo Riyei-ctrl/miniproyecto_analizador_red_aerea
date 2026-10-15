@@ -1,3 +1,8 @@
+"""
+datos.py
+Modulo ETL(Extraccion, Transformacion y Carga) para la red aerea.
+Usa Pandas unicamente para procesar los CSV y retorna estructuras nativas de Python.
+"""
 import pandas as pd
 import math
 
@@ -50,3 +55,24 @@ def cargar_rutas_region(ruta_airports_csv, ruta_routes_csv, pais_asignado="Mexic
 
     rutas_procesadas=[]
 
+    #7. Desacoplar Pandas: Convertir las filas en diccionarios nativos de Python
+    for _, fila in df_rutas_region.iterrows():
+        origen=fila["Source"]
+        destino=fila["Dest"]
+        aerolinea=fila["Airline"]
+        escalas= int(fila["Stops"]) if pd.notnull(fila["Stops"]) else 0
+
+        #solo procesamos si tenemos las coordenadas de origen y destino
+        if origen in dicc_coords and destino in dicc_coords:
+            lat1,lon1=dicc_coords[origen]["Lat"], dicc_coords[origen]["Lon"]
+            lat2,lon2=dicc_coords[destino]["Lat"], dicc_coords[destino]["Lon"]
+            distancia= calcular_distancia(lat1,lon1,lat2,lon2)
+
+            rutas_procesadas.append({
+                "aerolinea": aerolinea,
+                "origen": origen,
+                "destino": destino,
+                "distancia": distancia,
+                "escalas": escalas
+            })
+    return rutas_procesadas
