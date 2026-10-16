@@ -39,7 +39,7 @@ def medir_tiempo_lista_enlazada(datos_prueba):
 
     return tiempos
 
-def medir_arreglo_continuo(datos_prueba):
+def medir_arreglo_contiguo(datos_prueba):
     """Mide los tiempos de ejecucion del arreglo continuo nativo (list de Python)"""
     arreglo_continuo = []
     tiempos = {}
@@ -74,3 +74,36 @@ def medir_arreglo_continuo(datos_prueba):
     tiempos["eliminacion"] = time.perf_counter() - inicio
 
     return tiempos
+
+if __name__ == "__main__":
+    print("Cargando datos reales de OpenFlights...")
+    # Asegúrate de tener tus archivos en la carpeta data/
+    datos_completos = cargar_rutas_region("data/airports.dat", "data/routes.dat", "Mexico")
+    
+    total_rutas = len(datos_completos)
+    print(f"Total de rutas reales encontradas para la región: {total_rutas}\n")
+    
+    if total_rutas == 0:
+        print("No se encontraron rutas. Revisa la ruta de los archivos o el país asignado.")
+    else:
+        # La rúbrica exige graficar 3 tamaños de entrada. 
+        # Dividimos el total de datos reales en 3 proporciones.
+        tamanos_n = [total_rutas // 4, total_rutas // 2, total_rutas]
+        
+        print(f"{'N (Tamaño)':<12} | {'Operación':<15} | {'TDA Enlazado (s)':<18} | {'Lista Nativa (s)':<18}")
+        print("-" * 70)
+
+        for n in tamanos_n:
+            if n == 0: 
+                continue
+                
+            # Tomamos una 'rebanada' (slice) del arreglo de datos reales
+            datos_n = datos_completos[:n]
+            
+            tiempos_tda = medir_tiempo_lista_enlazada(datos_n)
+            tiempos_nativa = medir_arreglo_contiguo(datos_n)
+            
+            print(f"{n:<12} | {'Inserción':<15} | {tiempos_tda['insercion']:<18.5f} | {tiempos_nativa['insercion']:<18.5f}")
+            print(f"{'':<12} | {'Recorrido':<15} | {tiempos_tda['recorrido']:<18.5f} | {tiempos_nativa['recorrido']:<18.5f}")
+            print(f"{'':<12} | {'Eliminación':<15} | {tiempos_tda['eliminacion']:<18.5f} | {tiempos_nativa['eliminacion']:<18.5f}")
+            print("-" * 70)
