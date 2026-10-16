@@ -49,7 +49,7 @@ def calcular_itinerario_recursivo(tda_rutas, secuencia_iata, indice=0):
         actual = actual.siguiente
 
     if tramo_encontrado is None:
-        print(f"ERROR: No existe una ruta entre {origen.actual} y {destino.siguiente}.   ")  
+        print(f"ERROR: No existe una ruta entre {origen_actual} y {destino_siguiente}.   ")  
         return -1, -1 #detiene el calculo
 
     #se llama recursiva para el resto
@@ -58,7 +58,7 @@ def calcular_itinerario_recursivo(tda_rutas, secuencia_iata, indice=0):
     if distancia_restante == -1:
         return -1, -1
 
-    distancia_total = tramo_encontrado.distancia + distancia _restante
+    distancia_total = tramo_encontrado.distancia + distancia_restante
 
     #se suman las escalas
     conexion = 1 if indice + 1 < len(secuencia_iata) -1 else 0
@@ -71,7 +71,7 @@ def main():
 
     #cargar datos
     print("Extrayendo datos de OpenFlights y calculando distancias.")
-    datos-procesador = cargar_rutas_region("data/airports.dat", "data/routes.dat", "México")
+    datos_procesados = cargar_rutas_region("data/airports.dat", "data/routes.dat", "México")
 
     if not datos_procesados:
         print("Deteniendo ejecución:Faltan datos en 'data/'.")
@@ -111,9 +111,9 @@ def main():
 
             distancia, escalas = calcular_itinerario_recursivo(red_aerea, secuencia)
             if distancia != -1:
-            print(f"\n --- Resumen del itinerario {' -> '.join(secuencia)} --- ")
-            print(f"Distancia total a recorrer: {distancia:.2f} km")
-            print(f"Número de escalas de la ruta: {escalas}")
+                print(f"\n --- Resumen del itinerario {' -> '.join(secuencia)} --- ")
+                print(f"Distancia total a recorrer: {distancia:.2f} km")
+                print(f"Número de escalas de la ruta: {escalas}")
 
         elif opcion == "3":
             print("Cerrando...")
@@ -122,10 +122,4 @@ def main():
             print("Opción no válida.")
 
 if __name__ == "__main__":
-    main()
-
-
-
-
-
-                
+    main()                
