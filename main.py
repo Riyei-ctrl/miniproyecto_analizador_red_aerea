@@ -1,7 +1,7 @@
 #carga de datos, instanciación del TDA y la resolución de problemas (iterativos y recursivos).
 
 import sys
-from tda_rutas import ListaDobleRutas
+from tda_rutas import ListaRutas
 from datos import cargar_rutas_region
 
 #ayuda a que no colapse el programa
@@ -31,7 +31,7 @@ def localizar_rutas_origen(tda_rutas, aeropuerto_origen):
 def calcular_itinerario_recursivo(tda_rutas, secuencia_iata, indice=0):
     #Calcula la distancia total y escalas de un itinerario mediante recursividad. 
     #base:el índice alcanza el último aeropuerto de la secuencia
-    #recursivivdad: se busca la distancia entre el nodo actual y el siguiente y se suma al resto de la secuencia
+    #recursividad: se busca la distancia entre el nodo actual y el siguiente y se suma al resto de la secuencia
 
     if indice >= len(secuencia_iata) -1:
         return 0, 0
@@ -71,19 +71,19 @@ def main():
 
     #cargar datos
     print("Extrayendo datos de OpenFlights y calculando distancias.")
-    datos_procesados = cargar_rutas_region("data/airports.dat", "data/routes.dat", "México")
+    datos_procesados = cargar_rutas_region("data/airports.dat", "data/routes.dat", "Mexico")
 
     if not datos_procesados:
         print("Deteniendo ejecución:Faltan datos en 'data/'.")
         return
 
     #instanciar dato abstracto
-    red_aerea = ListaDobleRutas("Región asignada")
+    red_aerea = ListaRutas("Región asignada")
 
     #TDA
     print(f"Insertando  {len(datos_procesados)} rutas en la lista doblemente enlazada.")
     for ruta in datos_procesados:
-        red_aerea.insertar_ordenado(ruta['origen'], ruta['destino'], ruta['distancia'], ruta['escalas'])
+        red_aerea.insertar(ruta['origen'], ruta['destino'], ruta['distancia'], ruta['escalas'])
 
     print("Estructura de datos enlazada, lista para colsultas.")
 
@@ -103,7 +103,7 @@ def main():
 
         elif opcion == "2":
             entrada = input("Ingresa la secuencia del viaje separados por guion (Ej. MEX-CUN-MTY): ").upper()
-            secuencia = entrada.split(" - ")
+            secuencia = entrada.split("-")
 
             if len(secuencia) < 2:
                 print("Un itinerario debe tener al menos un punto de origen y un destino.")
