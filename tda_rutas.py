@@ -68,10 +68,10 @@ class ListaRutas:
             nuevo_nodo.anterior = actual
             self.cola = nuevo_nodo
         else:
-            actual.siguiente.anterior = nuevo_nodo
             nuevo_nodo.siguiente = actual.siguiente
-            actual.siguiente = nuevo_nodo
             nuevo_nodo.anterior = actual
+            actual.siguiente.anterior = nuevo_nodo
+            actual.siguiente = nuevo_nodo
 
         self.tamano += 1
 
@@ -93,19 +93,19 @@ class ListaRutas:
                     self.cabeza = actual.siguiente
                     if self.cabeza:
                         self.cabeza.anterior = None
+                    else:
+                        self.cola = None # La lista quedó vacias
+
+                elif actual == self.cola:
+                    self.cola = actual.anterior
+                    self.cola.siguiente = None
+
                 else:
-                    self.cola = None # La lista quedó vacia
+                    actual.anterior.siguiente = actual.siguiente
+                    actual.siguiente.anterior = actual.anterior
 
-            elif actual == self.cola:
-                self.cola = actual.anterior
-                self.cola.siguiente = None
-
-            else:
-                actual.anterior.siguiente = actual.siguiente
-                actual.siguiente.anterior = actual.anterior
-
-            self.tamano -= 1
-            return True
+                self.tamano -= 1
+                return True
 
             actual = actual.siguiente
 
