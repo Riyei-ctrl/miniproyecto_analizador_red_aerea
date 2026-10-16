@@ -12,14 +12,14 @@ Sistema desarrollado en Python con estructuras de datos enlazadas implementadas 
   pip install pandas
 
 # Instrucciones de Ejecución
-1. Clonar el repositorio
+## 1. Clonar el repositorio:
 Abre tu terminal y clona el proyecto en la computadora:
 **git clone https://github.com/Riyei-ctrl/miniproyecto_analizador_red_aerea.git**
 
-2. Ejecutar el Sistema Principal (Menú Interactivo)
+## 2. Ejecutar el Sistema Principal (Menú Interactivo):
 Para probar la localización de rutas por aeropuerto y el cálculo recursivo de itinerarios, ejecuta:
 **python main.py**
 
-3. Ejecutar el Análisis de Rendimiento (Benchmarking)
+## 3. Ejecutar el Análisis de Rendimiento (Benchmarking):
 Para generar los datos de la comparativa de complejidad entre la estructura enlazada y el arreglo contiguo, ejecuta:
 **python benchmarking.py**
